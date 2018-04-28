@@ -8,7 +8,7 @@ variable "security-groups" {}
 variable "key-pair" {}
 
 ##Create a single master node and floating IP
-resource "openstack_compute_floatingip_v2" "master-ip" {
+resource "openstack_compute_floatingip_associate_v2" "master-ip" {
   pool = "${var.floating-ip-pool}"
 }
 
@@ -21,11 +21,11 @@ resource "openstack_compute_instance_v2" "k8s-master" {
   network {
     name = "${var.internal-ip-pool}"
   }
-  floating_ip = "${openstack_compute_floatingip_v2.master-ip.address}"
+  floating_ip = "${openstack_compute_floatingip_associate_v2.master-ip.address}"
 }
 
 ##Create desired number of k8s nodes and floating IPs
-resource "openstack_compute_floatingip_v2" "node-ip" {
+resource "openstack_compute_floatingip_associate_v2" "node-ip" {
   pool = "${var.floating-ip-pool}"
   count = "${var.node-count}"
 }
@@ -40,5 +40,5 @@ resource "openstack_compute_instance_v2" "k8s-node" {
   network {
     name = "${var.internal-ip-pool}"
   }
-  floating_ip = "${element(openstack_compute_floatingip_v2.node-ip.*.address, count.index)}"
+  floating_ip = "${element(openstack_compute_floatingip_associate_v2.node-ip.*.address, count.index)}"
 }
