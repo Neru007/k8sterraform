@@ -24,7 +24,7 @@ resource "openstack_compute_instance_v2" "k8s-master" {
 }
 
 resource "openstack_compute_floatingip_associate_v2" "k8s-master" {
-    floating_ip = "${element(openstack_networking_floatingip_v2.k8s-master.*.address, count.index)}"
+    floating_ip = "${element(openstack_networking_floatingip_v2.master-ip.address)}"
     instance_id = "${element(openstack_compute_instance_v2.k8s-master.*.id, count.index)}"
 }
 
@@ -47,6 +47,6 @@ resource "openstack_compute_instance_v2" "k8s-node" {
 }
 
 resource "openstack_compute_floatingip_associate_v2" "k8s-node" {
-    floating_ip = "${element(openstack_networking_floatingip_v2.k8s-node.*.address, count.index)}"
+    floating_ip = "${element(openstack_networking_floatingip_v2.node-ip.*.address, count.index)}"
     instance_id = "${element(openstack_compute_instance_v2.k8s-node.*.id, count.index)}"
 }
