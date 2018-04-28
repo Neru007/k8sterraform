@@ -21,7 +21,7 @@ resource "openstack_compute_instance_v2" "k8s-master" {
   network {
     name = "${var.internal-ip-pool}"
   }
-  floating_ip = "${openstack_compute_floatingip_associate_v2.master-ip.address}"
+  floating_ip = "${openstack_compute_floatingip_v2.master-ip.address}"
 }
 
 ##Create desired number of k8s nodes and floating IPs
@@ -40,5 +40,5 @@ resource "openstack_compute_instance_v2" "k8s-node" {
   network {
     name = "${var.internal-ip-pool}"
   }
-  floating_ip = "${element(openstack_compute_floatingip_associate_v2.node-ip.*.address, count.index)}"
+  floating_ip = "${element(openstack_compute_floatingip_v2.node-ip.*.address, count.index)}"
 }
