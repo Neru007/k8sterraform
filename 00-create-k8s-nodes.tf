@@ -23,9 +23,9 @@ resource "openstack_compute_instance_v2" "k8s-master" {
   }
 }
 
-resource "openstack_compute_floatingip_associate_v2" "k8s-master" {
-    floating_ip = "${element(openstack_networking_floatingip_v2.k8s-master.*.address, count.index)}"
-    instance_id = "${element(openstack_compute_instance_v2.k8s-master.*.id, count.index)}"
+resource "openstack_compute_floatingip_associate_v2" "k8s_master" {
+    floating_ip = "${element(openstack_networking_floatingip_v2.k8s_master.*.address, count.index)}"
+    instance_id = "${element(openstack_compute_instance_v2.k8s_master.*.id, count.index)}"
 }
 
 ##Create desired number of k8s nodes and floating IPs
@@ -46,7 +46,7 @@ resource "openstack_compute_instance_v2" "k8s-node" {
   }
 }
 
-resource "openstack_compute_floatingip_associate_v2" "k8s-node" {
-    floating_ip = "${element(openstack_networking_floatingip_v2.k8s-node.*.address, count.index)}"
-    instance_id = "${element(openstack_compute_instance_v2.k8s-node.*.id, count.index)}"
+resource "openstack_compute_floatingip_associate_v2" "k8s_node" {
+    floating_ip = "${element(openstack_networking_floatingip_v2.k8s_node.*.address, count.index)}"
+    instance_id = "${element(openstack_compute_instance_v2.k8s_node.*.id, count.index)}"
 }
